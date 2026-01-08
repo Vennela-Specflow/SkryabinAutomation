@@ -11,6 +11,7 @@ public class LoginPageFunctions extends UiInteractables {
         UiInteractables.sendKeysByID(driver, elementReader.get("userNameLocator"), reader.get(userName));
         UiInteractables.sendKeysByID(driver, elementReader.get("passwordLocator"), reader.get(password));
         UiInteractables.clickByID(driver, elementReader.get("loginButtonLocator"));
+
     }
 
     public void verifyLoginErrors(String expectedErrorMessage) {

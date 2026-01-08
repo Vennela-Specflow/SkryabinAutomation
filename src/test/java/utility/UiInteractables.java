@@ -1,12 +1,14 @@
 package utility;
-
+import java.util.ArrayList;
 import java.util.List;
-
 import hooks.Hooks;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import pages.LoginPageFunctions;
+import static hooks.Hooks.driver;
 
 public class UiInteractables extends Hooks {
 
@@ -46,4 +48,52 @@ public class UiInteractables extends Hooks {
         select.selectByVisibleText(dropDownOption);
     }
 
-}
+    // This reusable method is used to get the text from textbox
+    public static String GetText(WebDriver driver, String uiText) {
+        WebElement element = driver.findElement(By.id(elementReader.get("firstNameLocator")));
+        uiText = element.getText();
+        return uiText;
+    }
+
+    // This class contains all the reusable methods for interacting with UI elements
+    // This reusable method is used to clear and enter text details in a textbox
+    public static void sendKeysByXpath(WebDriver driver, String xpath, String text) {
+        WebElement element = driver.findElement(By.xpath(xpath));
+        element.clear();
+        element.sendKeys(new CharSequence[]{text});
+    }
+    // This reusable method is used to switch to iframe by index
+    public static void switchToIframe(int index) {
+        driver.switchTo().frame(index);
+    }
+    // This reusable method is used to switch to mainframe
+    public static void switchTomainframe() {
+        driver.switchTo().defaultContent();
+    }
+    public static void assertText(WebDriver driver, String actual , String expected) {
+        expected = reader.get("expected");
+        actual = driver.findElement(By.xpath(actual)).getText();
+        Assert.assertEquals("Expected Must Check! error message",expected,actual);
+    }
+    public static void assertTexts(WebDriver driver, String actualerror , String expectederror) {
+        expectederror = reader.get("expectederror");
+        actualerror = driver.findElement(By.xpath(actualerror)).getText();
+        Assert.assertEquals("This field is required.",expectederror,actualerror);
+    }
+        public static void switchToNextTab (By locator) throws InterruptedException {
+            //WebElement element = driver.findElement(locator);
+            //element.click();
+            // Get the window handles
+            ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+            // Switch to the newly opened tab
+            driver.switchTo().window(tabs.get(1));
+            Thread.sleep(5000); // 10,000 milliseconds = 10 seconds
+    }
+        public static void switchBackToMainTab() {
+            ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+             //  Close the newly opened tab
+            driver.close();
+             //  Switch back to the original tab
+            driver.switchTo().window(tabs.get(0));
+        }
+    }
